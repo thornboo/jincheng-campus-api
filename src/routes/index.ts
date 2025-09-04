@@ -8,6 +8,7 @@ import campusErrandRoutes from './campusErrand';
 import commentRoutes from './comment';
 import uploadRoutes from './upload';
 import chatRoutes from './chat';
+import forumRoutes from './forum';
 
 const router = Router();
 
@@ -24,6 +25,7 @@ router.use(`/${API_VERSION}/campus-errand`, campusErrandRoutes);
 router.use(`/${API_VERSION}/comments`, commentRoutes);
 router.use(`/${API_VERSION}/upload`, uploadRoutes);
 router.use(`/${API_VERSION}/chat`, chatRoutes);
+router.use(`/${API_VERSION}/forum`, forumRoutes);
 
 // API 根路径
 router.get('/', (req, res) => {
@@ -41,6 +43,7 @@ router.get('/', (req, res) => {
       comments: `/${API_VERSION}/comments`,
       upload: `/${API_VERSION}/upload`,
       chat: `/${API_VERSION}/chat`
+      , forum: `/${API_VERSION}/forum`
     }
   });
 });

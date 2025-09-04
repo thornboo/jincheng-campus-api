@@ -226,6 +226,38 @@ model SystemMessage {
   @@map("system_messages")
 }
 
+// 校园墙帖子
+model ForumPost {
+  id           String      @id @default(cuid())
+  authorId     String
+  content      String      @db.Text
+  category     String
+  images       Json?
+  likeCount    Int         @default(0)
+  commentCount Int         @default(0)
+  shareCount   Int         @default(0)
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  author       User        @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  likes        ForumLike[]
+
+  @@map("forum_posts")
+}
+
+model ForumLike {
+  id        String    @id @default(cuid())
+  postId    String
+  userId    String
+  createdAt DateTime  @default(now())
+
+  post      ForumPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([postId, userId])
+  @@map("forum_likes")
+}
+
 // 轮播图管理
 model Banner {
   id        String       @id @default(cuid())
