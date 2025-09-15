@@ -241,6 +241,7 @@ model ForumPost {
 
   author       User        @relation(fields: [authorId], references: [id], onDelete: Cascade)
   likes        ForumLike[]
+  comments     ForumComment[]
 
   @@map("forum_posts")
 }
@@ -256,6 +257,24 @@ model ForumLike {
 
   @@unique([postId, userId])
   @@map("forum_likes")
+}
+
+model ForumComment {
+  id         String     @id @default(cuid())
+  postId     String
+  userId     String
+  content    String     @db.Text
+  parentId   String?
+  likeCount  Int        @default(0)
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+
+  post       ForumPost  @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  parent     ForumComment? @relation("ForumCommentReplies", fields: [parentId], references: [id])
+  replies    ForumComment[] @relation("ForumCommentReplies")
+
+  @@map("forum_comments")
 }
 
 // 轮播图管理
